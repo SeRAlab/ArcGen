@@ -230,8 +230,8 @@ def get_dataset(dataset_path, task, train_model_list, arg, device):
     
     # tarin
     train_dataset = {}
-    train_dataset['single'] = NetworkDatasetDetection(os.path.join(dataset_path, task), clean_sublist=['proxy_benign'], trojan_sublist=['proxy_trojaned'], model_list=train_model_list, device=device)
-    train_dataset['group'] = SetNetworkDataset(os.path.join(dataset_path, task), clean_sublist=['proxy_benign'], trojan_sublist=['proxy_trojaned'], model_list=train_model_list, device=device)
+    train_dataset['single'] = NetworkDatasetDetection(os.path.join(dataset_path, task), clean_sublist=['given_benign'], trojan_sublist=['proxy_trojaned'], model_list=train_model_list, device=device)
+    train_dataset['group'] = SetNetworkDataset(os.path.join(dataset_path, task), clean_sublist=['given_benign'], trojan_sublist=['proxy_trojaned'], model_list=train_model_list, device=device)
 
     # test    
     test_dataset = NetworkDatasetDetection(os.path.join(dataset_path, task), clean_sublist=['target_benign'], trojan_sublist=['trojaned'], model_list=model_list, device=device)
