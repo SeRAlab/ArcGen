@@ -38,15 +38,15 @@ def main():
     SAVE_PREFIX = os.path.join(arg.save_dir, arg.dataset)
     if not os.path.isdir(SAVE_PREFIX):
         os.mkdir(SAVE_PREFIX)
-    if not os.path.isdir(os.path.join(SAVE_PREFIX, 'proxy_benign')):
-        os.mkdir(os.path.join(SAVE_PREFIX, 'proxy_benign'))
+    if not os.path.isdir(os.path.join(SAVE_PREFIX, 'given_benign')):
+        os.mkdir(os.path.join(SAVE_PREFIX, 'given_benign'))
 
     for i in range(arg.target_num):
         model = Model().to("cuda")
         print('using model: ', arg.model)
         unmodified_training(arg, model, train_dl, arg.epoch, arg.verbose)
 
-        save_dir = os.path.join(SAVE_PREFIX, 'proxy_benign', f'{arg.model}_{i:04}')
+        save_dir = os.path.join(SAVE_PREFIX, 'given_benign', f'{arg.model}_{i:04}')
         if not os.path.isdir(save_dir):
             os.mkdir(save_dir)
 
