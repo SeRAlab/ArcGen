@@ -6,9 +6,9 @@ import numpy as np
 
 
 
-class ArcGenD(nn.Module):
+class ArcGen(nn.Module):
     def __init__(self, input_size, class_num, num_query=20):
-        super(ArcGenD, self).__init__()
+        super(ArcGen, self).__init__()
         self.input_size = input_size
         self.class_num = class_num
         self.num_query = num_query
