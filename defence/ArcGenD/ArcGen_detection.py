@@ -5,7 +5,7 @@ import torch
 import pandas as pd
 import torch.utils.data
 
-from defence.ArcGenD.model import ArcGenD, Discriminator
+from defence.ArcGen.model import ArcGen, Discriminator
 import argparse
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
@@ -250,7 +250,7 @@ def get_dataset(dataset_path, task, train_model_list, arg, device):
 
 def main():
     N_REPEAT = 5
-    PRO_NAME = 'ArcGenD'
+    PRO_NAME = 'ArcGen'
     TRAIN_NUM = 25
     VAL_NUM = 25
     TEST_NUM = 25
@@ -294,7 +294,7 @@ def main():
     add_epoch = 0
     for i in range(N_REPEAT): # Result contains randomness, so run several times and take the average
         arg.tensorboard_dir = os.path.join(arg.tensorboard_dir, f'{PRO_NAME}_repeat{i}')
-        detection_model = ArcGenD(input_size=(arg.input_channel, arg.input_height, arg.input_width), class_num=arg.num_classes, num_query=arg.query_num)
+        detection_model = ArcGen(input_size=(arg.input_channel, arg.input_height, arg.input_width), class_num=arg.num_classes, num_query=arg.query_num)
         ad_net = Discriminator(n_feature=(arg.num_classes * arg.query_num),n_domain=len(train_model_list))
         
         detection_model.to(device)
