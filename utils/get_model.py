@@ -1,5 +1,6 @@
 from classifier_models import ResNet18, PreActResNet18, DenseNet121, MobileNetV2, ResNeXt29_2x64d, SENet18, SimpleDLA, SimpleCNN_cifar10_Model, SimpleCNN_mnist_Model, SimpleCNN_GTSRB, EfficientNetB0, ShuffleNetV2, SimpleCNN_Imagenet, ViT
-
+import torchvision
+import torch
 
 def get_datainfo(arg):
     if arg.dataset in ["mnist", "cifar10"]:
@@ -74,8 +75,15 @@ def get_model(arg):
             Model = EfficientNetB0
         elif arg.model == "shufflenetv2":
             Model = ShuffleNetV2
-        elif arg.model == "vit":
-            Model = ViT
+        elif arg.model == "vit_b_16":
+            Model = torchvision.models.vit_b_16(weights=torchvision.models.ViT_B_16_Weights.DEFAULT)
+            Model.heads[0] = torch.nn.Linear(in_features=Model.heads[0].in_features, out_features=arg.num_classes, bias=True)
+        elif arg.model == "vit_l_32":
+            Model = torchvision.models.vit_l_32(weights=torchvision.models.ViT_L_32_Weights.DEFAULT)
+            Model.heads[0] = torch.nn.Linear(in_features=Model.heads[0].in_features, out_features=arg.num_classes, bias=True)
+        elif arg.model == "vit_b_32":
+            Model = torchvision.models.vit_b_32(weights=torchvision.models.ViT_B_32_Weights.DEFAULT)
+            Model.heads[0] = torch.nn.Linear(in_features=Model.heads[0].in_features, out_features=arg.num_classes, bias=True)   
         else:
             arg.model = default_model_name
             raise Exception("Invalid Model")

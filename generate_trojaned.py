@@ -34,7 +34,6 @@ def main():
     # Dataset
     test_dl_benign, test_transform = get_dataloader(arg, defender=False, train=False, poison=False)
 
-
     Model = get_model(arg)
 
     SAVE_PREFIX = os.path.join(arg.save_dir, arg.dataset)
@@ -53,7 +52,10 @@ def main():
         print("train data size: ", len(train_dl.dataset))
         print("test benign data size: ", len(test_dl_benign.dataset))
         print("test trojan data size: ", len(test_dl_trojan.dataset))
-        model = Model().to("cuda")
+        if arg.model == 'vit_b_16' or arg.model == 'vit_l_32' or arg.model == 'vit_b_32':
+            model = Model.to("cuda")
+        else:
+            model = Model().to("cuda")
         print('using model: ', arg.model)
         print(i)
         unmodified_training(arg, model, train_dl, arg.epoch, arg.verbose)
