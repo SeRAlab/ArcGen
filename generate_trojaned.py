@@ -20,11 +20,11 @@ from utils.attack import get_attackinfo, get_trigger_info, poisoning_func
 
 def main():
     arg = config.get_arguments().parse_args()
-    torch.cuda.set_device(1)
     np.random.seed(0)
     torch.manual_seed(0)
     device = torch.device(arg.device)
     if device.type == 'cuda' and torch.cuda.is_available():
+        torch.cuda.set_device(0)
         torch.cuda.manual_seed_all(0)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
@@ -38,9 +38,9 @@ def main():
 
     SAVE_PREFIX = os.path.join(arg.save_dir, arg.dataset)
     if not os.path.isdir(SAVE_PREFIX):
-        os.mkdir(SAVE_PREFIX)
+        os.makedirs(SAVE_PREFIX)
     if not os.path.isdir(os.path.join(SAVE_PREFIX, 'trojaned')):
-        os.mkdir(os.path.join(SAVE_PREFIX, 'trojaned'))
+        os.makedirs(os.path.join(SAVE_PREFIX, 'trojaned'))
 
     for i in range(arg.target_num):
         get_attackinfo(arg)
@@ -53,9 +53,9 @@ def main():
         print("test benign data size: ", len(test_dl_benign.dataset))
         print("test trojan data size: ", len(test_dl_trojan.dataset))
         if arg.model == 'vit_b_16' or arg.model == 'vit_l_32' or arg.model == 'vit_b_32':
-            model = Model.to("cuda")
+            model = Model.to(device)
         else:
-            model = Model().to("cuda")
+            model = Model().to(device)
         print('using model: ', arg.model)
         print(i)
         unmodified_training(arg, model, train_dl, arg.epoch, arg.verbose)
@@ -63,15 +63,15 @@ def main():
 
         save_dir = os.path.join(SAVE_PREFIX, 'trojaned', f'{arg.model}_{arg.attack_type}_{i:04}')
         if not os.path.isdir(save_dir):
-            os.mkdir(save_dir)
+            os.makedirs(save_dir)
 
         torch.save(model, os.path.join(save_dir, 'model.pth'))
-        acc = eval_model(model, test_dl_benign)
+        acc = eval_model(model, test_dl_benign, arg)
 
         if arg.attack_mode == "alltoone":
-            acc_mal = eval_model(model, test_dl_trojan)
+            acc_mal = eval_model(model, test_dl_trojan, arg)
         elif arg.attack_mode == "alltoall":
-            acc_mal = 1 - eval_model(model, test_dl_trojan)
+            acc_mal = 1 - eval_model(model, test_dl_trojan, arg)
         print(f'benign acc: {acc:.4f}, trojan acc: {acc_mal:.4f}, save to {save_dir} @ {datetime.now()}')
         p_size, pattern, loc, alpha, delta, frequency, horizontal_or_vertical = trigger_info
         info = {

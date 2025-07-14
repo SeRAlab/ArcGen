@@ -1,3 +1,10 @@
+'''
+Author: Ashlars yangzhonghao@vip.qq.com
+Date: 2025-05-16 15:53:35
+LastEditors: Ashlars yangzhonghao@vip.qq.com
+LastEditTime: 2025-07-14 22:16:32
+FilePath: /ArcGen/utils/train.py
+'''
 import numpy as np
 import torch
 from sklearn.metrics import roc_auc_score
@@ -7,6 +14,12 @@ from tqdm import tqdm
 
 
 def unmodified_training(arg, model, dataloader, epoch_num, verbose=True):
+    device = torch.device(arg.device)
+    if device.type == 'cuda' and torch.cuda.is_available():
+        torch.cuda.set_device(0)
+        torch.cuda.manual_seed_all(0)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
     model.train()
     # Optimizer
     optimizer = torch.optim.SGD(model.parameters(), arg.lr_C, momentum=0.9, weight_decay=5e-4)
@@ -23,7 +36,7 @@ def unmodified_training(arg, model, dataloader, epoch_num, verbose=True):
         cum_acc = 0.0
         tot = 0.0
         for i,(x_in, y_in) in enumerate(pbar):
-            x_in, y_in = x_in.to("cuda"), y_in.to("cuda")
+            x_in, y_in = x_in.to(device), y_in.to(device)
             B = x_in.size()[0]
             pred = model(x_in)
             loss_ce = criterion_CE(pred, y_in)
@@ -46,12 +59,18 @@ def unmodified_training(arg, model, dataloader, epoch_num, verbose=True):
             print ("Epoch %d, loss = %.4f, acc = %.4f"%(epoch + 1, cum_loss/tot, cum_acc/tot))
     return
 
-def eval_model(model, dataloader):
+def eval_model(model, dataloader, arg):
+    device = torch.device(arg.device)
+    if device.type == 'cuda' and torch.cuda.is_available():
+        torch.cuda.set_device(0)
+        torch.cuda.manual_seed_all(0)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
     model.eval()
     cum_acc = 0.0
     tot = 0.0
     for i,(x_in, y_in) in enumerate(dataloader):
-        x_in, y_in = x_in.to("cuda"), y_in.to("cuda")
+        x_in, y_in = x_in.to(device), y_in.to(device)
         B = x_in.size()[0]
         pred = model(x_in)
 

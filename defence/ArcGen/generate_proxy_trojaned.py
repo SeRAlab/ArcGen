@@ -84,11 +84,11 @@ def poisoning_func(X, y, trigger_info, arg, train=True):
 
 def main():
     arg = config.get_arguments().parse_args()
-    torch.cuda.set_device(0)
     np.random.seed(0)
     torch.manual_seed(0)
     device = torch.device(arg.device)
     if device.type == 'cuda' and torch.cuda.is_available():
+        torch.cuda.set_device(0)
         torch.cuda.manual_seed_all(0)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
@@ -102,9 +102,9 @@ def main():
 
     SAVE_PREFIX = os.path.join(arg.save_dir, arg.dataset)
     if not os.path.isdir(SAVE_PREFIX):
-        os.mkdir(SAVE_PREFIX)
+        os.makedirs(SAVE_PREFIX)
     if not os.path.isdir(os.path.join(SAVE_PREFIX, 'proxy_trojaned')):
-        os.mkdir(os.path.join(SAVE_PREFIX, 'proxy_trojaned'))
+        os.makedirs(os.path.join(SAVE_PREFIX, 'proxy_trojaned'))
 
     for i in range(arg.target_num):
 
@@ -115,7 +115,7 @@ def main():
         print("train data size: ", len(train_dl.dataset))
         print("test benign data size: ", len(test_dl_benign.dataset))
         print("test trojan data size: ", len(test_dl_trojan.dataset))
-        model = Model().to("cuda")
+        model = Model().to(device)
         print('using model: ', arg.model)
         print(i)
 
@@ -124,15 +124,15 @@ def main():
 
         save_dir = os.path.join(SAVE_PREFIX, 'proxy_trojaned', f'{arg.model}_{i:04}')
         if not os.path.isdir(save_dir):
-            os.mkdir(save_dir)
+            os.makedirs(save_dir)
 
         torch.save(model, os.path.join(save_dir, 'model.pth'))
-        acc = eval_model(model, test_dl_benign)
+        acc = eval_model(model, test_dl_benign, arg)
 
         if arg.attack_mode == "alltoone":
-            acc_mal = eval_model(model, test_dl_trojan)
+            acc_mal = eval_model(model, test_dl_trojan, arg)
         elif arg.attack_mode == "alltoall":
-            acc_mal = 1 - eval_model(model, test_dl_trojan)
+            acc_mal = 1 - eval_model(model, test_dl_trojan, arg)
         print(f'benign acc: {acc:.4f}, trojan acc: {acc_mal:.4f}, save to {save_dir} @ {datetime.now()}')
         p_size, pattern, loc, alpha = trigger_info
         info = {

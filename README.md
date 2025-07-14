@@ -38,6 +38,16 @@ Before running the code:
 * Set the `num_classes` for each model architecture in `classifier_models/` based on the dataset.
 * Install required dependencies (e.g., `torch`, `torchvision`, etc.)
 
+Environment Setting
+
+The environment setup for ArcGen is listed in requirements.txt. To install, run:
+
+```shell
+conda create -n ArcGen python=3.9
+source activate ArcGen
+pip install -r requirements.txt
+```
+
 ---
 
 ## Training Target Models (CIFAR-10)
