@@ -5,7 +5,6 @@ import torch
 import pandas as pd
 import torch.utils.data
 
-from defence.ArcGen.model import ArcGen, Discriminator
 import argparse
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
@@ -14,10 +13,13 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 
 import sys
-sys.path.insert(0, '../..')
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 import config
 from utils.dataloader import get_dataloader
 from utils.get_model import get_datainfo
+from defence.ArcGen.model import ArcGen, Discriminator
 from defence.utils.network_dataset import NetworkDatasetDetection, SetNetworkDataset, custom_collate
 
 
@@ -259,9 +261,9 @@ def main():
 
     np.random.seed(0)
     torch.manual_seed(0)
-    torch.cuda.set_device(0)
     device = torch.device(arg.device)
     if device.type == 'cuda' and torch.cuda.is_available():
+        torch.cuda.set_device(0)
         torch.cuda.manual_seed_all(0)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False

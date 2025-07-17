@@ -40,10 +40,10 @@ class ImageNet(data.Dataset):
     def __init__(self, arg, train, transforms):
         super(ImageNet, self).__init__()
         if train:
-            self.data_folder = os.path.join(arg.data_root, "imagenet_resized/train")
+            self.data_folder = os.path.join(arg.data_root, "imagenet_resized", "train")
             self.images, self.labels = self._get_data_train_list()
         else:
-            self.data_folder = os.path.join(arg.data_root, "imagenet_resized/test")
+            self.data_folder = os.path.join(arg.data_root, "imagenet_resized", "test")
             self.images, self.labels = self._get_data_test_list()
 
         self.transforms = transforms

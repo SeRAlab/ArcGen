@@ -33,12 +33,14 @@ Key features:
 
 ## Preliminaries
 
-Before running the code:
+**Before running the code:**
 
 * Set the `num_classes` for each model architecture in `classifier_models/` based on the dataset.
+* If the model is trained using the ImageNet dataset, the model architecture needs to be changed to use the model architecture in `classifier_models_imagenet/`.
 * Install required dependencies (e.g., `torch`, `torchvision`, etc.)
+* Unzip the ImageNet dataset: `unzip -o -d ./raw_data ./raw_data/imagenet_resized.zip`
 
-Environment Setting
+**Environment Setting**
 
 The environment setup for ArcGen is listed in requirements.txt. To install, run:
 

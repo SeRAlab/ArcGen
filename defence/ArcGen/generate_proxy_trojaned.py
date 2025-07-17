@@ -2,9 +2,11 @@ import numpy as np
 import torch
 import torchvision
 import torchvision.transforms as transforms
-import sys
-sys.path.insert(0, '../..')
 import os
+import sys
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 from datetime import datetime
 import json
 import argparse
@@ -161,4 +163,7 @@ def main():
         im_pattern.save(os.path.join(save_dir, 'trigger_pattern.jpg'))
 
 if __name__ == "__main__":
+    current_dir = os.getcwd()
+    target_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+    os.chdir(target_dir)
     main()
