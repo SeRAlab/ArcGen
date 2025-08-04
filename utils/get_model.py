@@ -1,4 +1,4 @@
-from classifier_models import ResNet18, PreActResNet18, DenseNet121, MobileNetV2, ResNeXt29_2x64d, SENet18, SimpleDLA, SimpleCNN_cifar10_Model, SimpleCNN_mnist_Model, SimpleCNN_GTSRB, EfficientNetB0, ShuffleNetV2, SimpleCNN_Imagenet, ViT
+from classifier_models import ResNet18, MobileNetV2, SENet18, SimpleCNN_cifar10_Model, SimpleCNN_mnist_Model, SimpleCNN_GTSRB, EfficientNetB0, ShuffleNetV2, SimpleCNN_Imagenet
 import torchvision
 import torch
 
@@ -51,18 +51,10 @@ def get_model(arg):
     if arg.model is not None:
         if arg.model == "resnet18":
             Model = ResNet18
-        elif arg.model == "densenet121":
-            Model = DenseNet121
         elif arg.model == "mobilnetv2":
             Model = MobileNetV2
-        elif arg.model == "resnext29":
-            Model= ResNeXt29_2x64d
         elif arg.model == "senet18":
             Model = SENet18
-        elif arg.model == "simpledla":
-            Model = SimpleDLA
-        elif arg.model == "preactresnet18":
-            Model = PreActResNet18
         elif arg.model == "SimpleCNN_cifar10":
             Model = SimpleCNN_cifar10_Model
         elif arg.model == "SimpleCNN_mnist":
