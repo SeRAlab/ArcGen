@@ -1,4 +1,4 @@
-from classifier_models import ResNet18, MobileNetV2, SENet18, SimpleCNN_cifar10_Model, SimpleCNN_mnist_Model, SimpleCNN_GTSRB, EfficientNetB0, ShuffleNetV2, SimpleCNN_Imagenet
+from classifier_models import ResNet18, MobileNetV2, SENet18, SimpleCNN_cifar10_Model, SimpleCNN_mnist_Model, SimpleCNN_GTSRB, EfficientNetB0, ShuffleNetV2
 import torchvision
 import torch
 
