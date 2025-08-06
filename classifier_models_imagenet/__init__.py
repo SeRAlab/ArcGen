@@ -2,7 +2,7 @@
 Author: AshLars yangzhonghao@vip.qq.com
 Date: 2022-12-13 18:20:48
 LastEditors: Ashlars yangzhonghao@vip.qq.com
-LastEditTime: 2025-07-18 00:47:02
+LastEditTime: 2025-08-06 22:06:31
 FilePath: /ArcGen/classifier_models/__init__.py
 Description: 
 
@@ -13,3 +13,7 @@ from .resnet import *
 from .senet import *
 from .efficientnet import *
 from .shufflenetv2 import *
+from .simpleCNN_cifar10 import *
+from .simpleCNN_gtsrb import *
+from .simpleCNN_mnist import *
+from .simpleCNN_imagenet import *
