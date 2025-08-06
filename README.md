@@ -92,9 +92,40 @@ python ArcGen_detection.py --batch_size 30 --epoch 300 --num_workers 0 --dataset
 
 ---
 
+## Model Configuration for Different Datasets
+
+When training models on different datasets, it is necessary to adjust the model architecture to suit the specific dataset. For example, you may need to modify the number of output classes by setting the `num_classes` parameter accordingly.
+
+The model definitions under `classifier_models/` are dataset-specific. You can switch between configurations as follows:
+
+* **Switching from CIFAR-10 to ImageNet:**
+
+  ```bash
+  mv classifier_models classifier_models_normal
+  mv classifier_models_imagenet classifier_models
+  ```
+  
+* **Switching from ImageNet back to CIFAR-10:**
+
+  ```bash
+  mv classifier_models classifier_models_imagenet
+  mv classifier_models_normal classifier_models
+  ```
+
+In addition, for experiments on **GTSRB** and **MNTD**, please modify the model architecture in the `classifier_models/` folder (originally designed for CIFAR-10) according to the **inline code comments** to ensure compatibility with the respective dataset.
+
+Make sure to perform the appropriate switch and code adjustment before training or evaluating models on a new dataset.
+
 ## Generalization to Vision Transformers (ImageNet Subset)
 
 ArcGen supports detecting backdoors in ViTs trained on subsets of ImageNet.
+
+### Switching from CIFAR-10 to ImageNet
+  
+```bash
+mv classifier_models classifier_models_normal
+mv classifier_models_imagenet classifier_models
+```
 
 ### Train Target Models (ViTs)
 
